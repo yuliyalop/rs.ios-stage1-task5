@@ -41,13 +41,17 @@ NSString *KeyCountry = @"country";
     NSArray *keys = [NSArray new];
     NSString *number = [NSString new];
     NSMutableString *number1;
-    int obj;
     NSString *i = [NSString new];
+  
+    NSMutableString *noPlus = [[NSMutableString alloc]initWithString:string];
+    if ([noPlus characterAtIndex:0] == '+')
+    {
+        [noPlus deleteCharactersInRange:NSMakeRange(0, 1)];
+    }
     
-    
-    if ([string length] >= 3  && [string characterAtIndex:0] != '7'){
-        code = [string substringToIndex:3];
-        number = [string substringFromIndex:3];
+    if ([noPlus length] >= 3  && [noPlus characterAtIndex:0] != '7'){
+        code = [noPlus substringToIndex:3];
+        number = [noPlus substringFromIndex:3];
         number1 = [[NSMutableString alloc]initWithString:number];
         NSMutableArray *array = [NSMutableArray new];
         [array addObject:code];
@@ -62,7 +66,7 @@ NSString *KeyCountry = @"country";
                 }
                 int k = 0;
                 int j = [code length];
-                while ( k < [nine length] && j < [string length]) {
+                while ( k < [nine length] && j < [noPlus length]) {
                     if ([nine characterAtIndex:k] == 'x') {
                         k++;
                         j++;
@@ -71,11 +75,9 @@ NSString *KeyCountry = @"country";
                         k++;
                     }
                 }
-                NSString *number2 = [[NSString alloc]initWithString:number1];
                 result = [[NSMutableString alloc]initWithString:code];
                 [result insertString:@"+" atIndex:0];
                 [result appendString:number1];
-                NSLog(result);
                 country = [countries valueForKey:i];
                 return @{KeyPhoneNumber: result,
                          KeyCountry: country};
@@ -88,7 +90,7 @@ NSString *KeyCountry = @"country";
                 }
                 int k = 0;
                 int j = [code length];
-                while ( k < [eight length] && j < [string length]) {
+                while ( k < [eight length] && j < [noPlus length]) {
                     if ([eight characterAtIndex:k] == 'x') {
                         k++;
                         j++;
@@ -97,17 +99,15 @@ NSString *KeyCountry = @"country";
                         k++;
                     }
                 }
-                NSString *number2 = [[NSString alloc]initWithString:number1];
                 result = [[NSMutableString alloc]initWithString:code];
                 [result insertString:@"+" atIndex:0];
                 [result appendString:number1];
-                NSLog(result);
                 country = [countries valueForKey:i];
                 return @{KeyPhoneNumber: result,
                          KeyCountry: country};
             }
             } else {
-                NSMutableString *alternative = [[NSMutableString alloc]initWithString:string];
+                NSMutableString *alternative = [[NSMutableString alloc]initWithString:noPlus];
                 if ([alternative length] > 12) {
                     [alternative deleteCharactersInRange:NSMakeRange(12, [alternative length]-12)];
                 }
@@ -117,9 +117,9 @@ NSString *KeyCountry = @"country";
                     }
                                                                     }
         
-
-            else if ([string characterAtIndex:0] == '7'){
-                number = [string substringFromIndex:1];
+# pragma mark 10
+            else if ([noPlus characterAtIndex:0] == '7'){
+                number = [noPlus substringFromIndex:1];
                 NSMutableString *number1 = [[NSMutableString alloc]initWithString:number];
                 if ([number length] > 10) {
                     [number1 deleteCharactersInRange:NSMakeRange(10, [number1 length]-10)];
@@ -127,7 +127,7 @@ NSString *KeyCountry = @"country";
                 result = [[NSMutableString alloc]initWithString:@"+7"];
                 int k = 0;
                 int j = 1;
-                while ( k < [ten length] && j < [string length]) {
+                while ( k < [ten length] && j < [noPlus length]) {
                     if ([ten characterAtIndex:k] == 'x') {
                         k++;
                         j++;
@@ -137,7 +137,7 @@ NSString *KeyCountry = @"country";
                     }
                 }
                 [result appendString:number1];
-                if ([string length] > 1 && [string characterAtIndex:1] == '7'){
+                if ([noPlus length] > 1 && [noPlus characterAtIndex:1] == '7'){
                     country = @"KZ";
                     return @{KeyPhoneNumber: result,
                              KeyCountry: country};
@@ -147,7 +147,7 @@ NSString *KeyCountry = @"country";
                              KeyCountry: country};
                 }
             } else {
-                NSMutableString *alternative = [[NSMutableString alloc]initWithString:string];
+                NSMutableString *alternative = [[NSMutableString alloc]initWithString:noPlus];
                 if ([alternative length] > 12) {
                     [alternative deleteCharactersInRange:NSMakeRange(12, [alternative length]-12)];
                 }
